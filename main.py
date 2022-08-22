@@ -27,6 +27,7 @@ def run(*args, **kwargs):
     results = Results(env)
     return results
 
+#testing git hahahah
 if __name__ == "__main__":
     results = run(num_agent=2, alpha=2)
     results.print_results()
