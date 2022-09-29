@@ -25,7 +25,7 @@ class AuctionEnvironment:
     action_space_num: int = field(default = 19, validator=[validators.instance_of(int), validate_action_space_num] )
     total_periods: int = field(default=1000000, validator=[validators.instance_of(int), validate_total_periods])
 
-    tstable:int = 1000
+    tstable:int = 10000
     tscore:int = 0
     
 

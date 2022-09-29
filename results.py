@@ -12,6 +12,7 @@ class Results:
 
     env: AuctionEnvironment = field(factory=AuctionEnvironment)
     competitive_profits: np.array = field(init=False)
+    last_bid: np.array = field(init=False)
     average_bid: np.array = field(init=False)
     average_payoff: np.array = field(init=False)
 
@@ -20,8 +21,9 @@ class Results:
 
 
     def __attrs_post_init__(self):
-        self.average_bid = np.array(self.env.bid_history)[-25000:].mean(axis=0)
-        self.average_payoff = np.array(self.env.payoff_history)[-25000:].mean(axis=0)
+        self.last_bid = np.array(self.env.bid_history)[-1]
+        self.average_bid = np.array(self.env.bid_history)[-2500:].mean(axis=0)
+        self.average_payoff = np.array(self.env.payoff_history)[-2500:].mean(axis=0)
         #self.competitive_profits = self.competitive_profits_compute()
         self.bid_history = self.env.bid_history
         self.payoff_history = self.env.payoff_history
@@ -33,8 +35,9 @@ class Results:
 
         print("alpha = ", self.env.alpha, " (1 is FPA, 2 is SPA) ")
         print(tabulate({"Name": name,
+                    "Last_bid": self.last_bid,
                     #"Bertrand-Nash Price": self.env.competitive_prices_array,
-                    "Average Bid": self.average_bid,
+                    "Average Bid (last 2500 bids)": self.average_bid,
                     #"Bertrand-Nash Profit": self.competitive_profits,
                     "Average Payoff": self.average_payoff,
                 }, 
