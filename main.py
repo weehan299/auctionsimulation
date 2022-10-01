@@ -7,31 +7,32 @@ def run(*args, **kwargs):
     
 
     agent1 = QLearning(learning_rate= kwargs.get("learning_rate",0.05), gamma = kwargs.get("gamma", 0.99),
-                        #policy=Boltzmann(temp_max=kwargs.get("temp_max",3), temp_min=kwargs.get("temp_min",0.0001),tot_steps = kwargs.get("total_periods", 1000000)))
-                        policy=TimeDecliningExploration(beta = kwargs.get("beta", 0.0002)))
+                        policy=Boltzmann(temp_max=kwargs.get("temp_max",3), temp_min=kwargs.get("temp_min",0.0001),tot_steps = kwargs.get("total_periods", 1000000)))
+                        #policy=TimeDecliningExploration(beta = kwargs.get("beta", 0.0002)))
     agent2 = QLearning(learning_rate= kwargs.get("learning_rate",0.05), gamma = kwargs.get("gamma", 0.99), 
-                        #policy=Boltzmann(temp_max=kwargs.get("temp_max",3),temp_min=kwargs.get("temp_min",0.0001),tot_steps = kwargs.get("total_periods", 1000000)))
-                        policy=TimeDecliningExploration(beta = kwargs.get("beta", 0.0002)))
-    constant_agent = ConstantBidder()
-    titfortat_agent = TitforTat()
+                        policy=Boltzmann(temp_max=kwargs.get("temp_max",3),temp_min=kwargs.get("temp_min",0.0001),tot_steps = kwargs.get("total_periods", 1000000)))
+                        #policy=TimeDecliningExploration(beta = kwargs.get("beta", 0.0002)))
 
-    agent3 = QLearningWithMemory(learning_rate= kwargs.get("learning_rate",0.05), gamma = kwargs.get("gamma", 0.99), 
+    memory_agent1 = QLearningWithMemory(learning_rate= kwargs.get("learning_rate",0.05), gamma = kwargs.get("gamma", 0.99), 
                         #policy=Boltzmann(temp_max=kwargs.get("temp_max",3),temp_min=kwargs.get("temp_min",0.0001),tot_steps = kwargs.get("total_periods", 1000000)))
                         policy=TimeDecliningExploration(beta = kwargs.get("beta", 0.0002)))
     
-    agent4 = QLearningWithMemory(learning_rate= kwargs.get("learning_rate",0.05), gamma = kwargs.get("gamma", 0.99), 
+    memory_agent2 = QLearningWithMemory(learning_rate= kwargs.get("learning_rate",0.05), gamma = kwargs.get("gamma", 0.99), 
                         #policy=Boltzmann(temp_max=kwargs.get("temp_max",3),temp_min=kwargs.get("temp_min",0.0001),tot_steps = kwargs.get("total_periods", 1000000)))
                         policy=TimeDecliningExploration(beta = kwargs.get("beta", 0.0002)))
+
+    constant_agent = ConstantBidder()
+    titfortat_agent = TitforTat()
 
     env = AuctionEnvironment(
         total_periods=kwargs.get("total_periods",1000000),
         action_space_num=kwargs.get("action_space_num",15),
         alpha = kwargs.get("alpha",1),
-        agents = [agent1, titfortat_agent]
+        agents = [agent1, agent2]
     )
 
-    env.run_simulation()
-    #env.run_simulation_dont_provide_other_players_info()
+    #env.run_simulation()
+    env.run_simulation_dont_provide_other_players_info()
 
     results = Results(env)
     return results
